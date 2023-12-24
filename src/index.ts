@@ -2,7 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import conectarDB from './config/db';
 import userRoutes from './routes/user.routes';
-import clientRoutes from '@routes/client.routes';
+import clientRoutes from './routes/client.routes';
+import purchaseRoutes from './routes/purchase.routes';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ conectarDB()
 // Routing
 app.use('/api/users', userRoutes);
 app.use('/api/clients', clientRoutes);
+app.use('/api/purchases', purchaseRoutes);
 
 const PORT = process.env.PORT ?? 4000;
 app.listen(PORT, () => {
