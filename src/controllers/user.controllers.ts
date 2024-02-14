@@ -4,6 +4,7 @@ import User from '../models/User';
 import generateId from '../helpers/generateId';
 import generateJWT from '../helpers/generateJWT';
 import { sendError, sendResponse } from '../helpers/responseHelper';
+import { emailForgetPassword, emailRegister } from '@helpers/email';
 
 const register = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -23,6 +24,12 @@ const register = async (req: Request, res: Response) => {
     const user = new User(req.body);
     user.token = generateId();
     await user.save();
+
+    void emailRegister({
+      email: user.email,
+      name: user.userName,
+      token: user.token
+    });
 
     return sendResponse({
       res,
@@ -61,7 +68,8 @@ const authenticate = async (req: Request, res: Response) => {
     });
   }
 
-  if (user.checkPassword(password as string)) {
+  // eslint-disable-next-line @typescript-eslint/await-thenable
+  if (await user.checkPassword(password as string)) {
     return sendResponse({
       res,
       code: 200,
@@ -132,9 +140,14 @@ const forgotPassword = async (req: Request, res: Response) => {
     });
   }
   try {
-    // creación de token para cambio de contraseña
     user.token = generateId();
     await user.save();
+
+    void emailForgetPassword({
+      email: user.email,
+      name: user.userName,
+      token: user.token
+    });
 
     return sendResponse({
       res,
