@@ -5,18 +5,18 @@ import mongoose, {
   type Model
 } from 'mongoose';
 
-interface IPurchase extends Document {
+export interface IPurchase extends Document {
   date: Date;
   items: Array<{
     name: string;
     description: string;
     value: number;
-    returned: boolean;
   }>;
   value: number;
   note: string;
-  typePay: string;
+  typePay: 'Contado' | 'Credito';
   client: Types.ObjectId;
+  seller: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -67,6 +67,10 @@ const purchaseSchema = new Schema<IPurchase>(
     client: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client'
+    },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
   },
   {

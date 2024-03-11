@@ -5,11 +5,13 @@ import mongoose, {
   type Model
 } from 'mongoose';
 
-interface IPayment extends Document {
+export interface IPayment extends Document {
   date: Date;
   value: number;
   note: string;
+  reason: 'Pago' | 'Devolucion';
   client: Types.ObjectId;
+  seller: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,9 +32,18 @@ const paymentSchema = new Schema<IPayment>(
       type: String,
       trim: true
     },
+    reason: {
+      type: String,
+      required: true,
+      enum: ['Pago', 'Devolucion']
+    },
     client: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client'
+    },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
   },
   {

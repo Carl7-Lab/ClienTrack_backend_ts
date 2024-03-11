@@ -6,6 +6,7 @@ import userRoutes from './routes/user.routes';
 import clientRoutes from './routes/client.routes';
 import purchaseRoutes from './routes/purchase.routes';
 import paymentRoutes from './routes/payment.routes';
+import analyticsRoutes from '@routes/analytics.routes';
 
 const app = express();
 app.use(express.json());
@@ -46,6 +47,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/purchases', purchaseRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 const PORT = process.env.PORT ?? 4000;
 app.listen(PORT, () => {

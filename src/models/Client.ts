@@ -5,6 +5,13 @@ import mongoose, {
   type Types
 } from 'mongoose';
 
+interface IAddress {
+  streets: string;
+  city: string;
+  description?: string;
+  location?: string;
+}
+
 interface IClient extends Document {
   name: string;
   lastName?: string;
@@ -12,7 +19,7 @@ interface IClient extends Document {
   email?: string;
   description?: string;
   alias?: string;
-  addresses: Types.ObjectId[];
+  addresses: IAddress[];
   seller: Types.ObjectId;
   hide: boolean;
   createdAt: Date;
@@ -50,8 +57,22 @@ const clientSchema = new Schema<IClient>(
     },
     addresses: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Address'
+        streets: {
+          type: String,
+          required: true
+        },
+        city: {
+          type: String,
+          required: true
+        },
+        description: {
+          type: String,
+          trim: true
+        },
+        location: {
+          type: String,
+          trim: true
+        }
       }
     ],
     seller: {

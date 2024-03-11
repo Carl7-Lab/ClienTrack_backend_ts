@@ -4,8 +4,7 @@ import {
   newClient,
   getClients,
   getClient,
-  updateClient,
-  deleteClient
+  updateClient
 } from '@controllers/client.controllers';
 import checkAuth from '@middleware/checkAuth';
 
@@ -13,10 +12,6 @@ const router: Router = express.Router();
 
 router.route('/').get(checkAuth, getClients).post(checkAuth, newClient);
 
-router
-  .route('/:id')
-  .get(checkAuth, getClient)
-  .put(checkAuth, updateClient)
-  .patch(checkAuth, deleteClient);
+router.route('/:id').get(checkAuth, getClient).put(checkAuth, updateClient);
 
 export default router;

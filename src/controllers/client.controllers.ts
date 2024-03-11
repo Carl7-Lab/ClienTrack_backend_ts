@@ -2,11 +2,41 @@
 import { type Request, type Response } from 'express';
 import Client from '../models/Client';
 import { sendError, sendResponse } from '../helpers/responseHelper';
+import RowKardex from '@models/RowKardex';
 
 const getClients = async (req: Request, res: Response) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, search } = req.query;
+
+  let query = {};
+
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (search) {
+    query = {
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
+        { cell: { $regex: search, $options: 'i' } }
+      ]
+    };
+  }
+
+  const totalClients = await Client.countDocuments({
+    ...query,
+    $and: [{ seller: { $in: req.body.user } }, { hide: false }]
+  });
+
+  if (totalClients === 0) {
+    return sendResponse({
+      res,
+      code: 404,
+      success: false,
+      message: 'No Records Found.',
+      data: {}
+    });
+  }
 
   const clients = await Client.find({
+    ...query,
     $and: [{ seller: { $in: req.body.user } }, { hide: false }]
   })
     .select('-createdAt -updatedAt -__v -hide')
@@ -29,7 +59,14 @@ const getClients = async (req: Request, res: Response) => {
     code: 200,
     success: true,
     message: 'Clients Found Successfully.',
-    data: { clients, params: req.query }
+    data: {
+      clients,
+      pagination: {
+        page: Number(page),
+        limit: Number(limit),
+        total: totalClients
+      }
+    }
   });
 };
 
@@ -61,7 +98,9 @@ const getClient = async (req: Request, res: Response) => {
       data: {}
     });
   }
-  const client = await Client.findById(req.params.id);
+  const client = await Client.findById(req.params.id).select(
+    '-createdAt -updatedAt -__v -hide'
+  );
 
   if (
     client === null ||
@@ -77,12 +116,20 @@ const getClient = async (req: Request, res: Response) => {
     });
   }
 
+  const firstRowKardex = await RowKardex.findOne({ client: client._id })
+    .select('createdAt -_id')
+    .sort({ createdAt: 1 });
+
+  const today = new Date();
+  const firstMoveDate =
+    firstRowKardex?.createdAt ?? new Date(today.getFullYear(), 0, 1);
+
   return sendResponse({
     res,
     code: 200,
     success: true,
     message: 'Client Found.',
-    data: { client }
+    data: { client, firstMoveDate }
   });
 };
 
@@ -96,7 +143,6 @@ const updateClient = async (req: Request, res: Response) => {
       data: {}
     });
   }
-
   const client = await Client.findById(req.params.id);
 
   if (
@@ -119,61 +165,20 @@ const updateClient = async (req: Request, res: Response) => {
   client.email = req.body.updateClient.email ?? client.email;
   client.description = req.body.updateClient.description ?? client.description;
   client.alias = req.body.updateClient.alias ?? client.alias;
+  client.addresses = req.body.updateClient.addresses ?? client.addresses;
 
   try {
-    const updateClient = await client.save();
+    const upClient = await client.save();
     return sendResponse({
       res,
       code: 200,
       success: true,
       message: 'Updated Client.',
-      data: { updateClient }
+      data: { updateClient: upClient }
     });
   } catch (error) {
     return sendError({ res, err: error });
   }
 };
 
-const deleteClient = async (req: Request, res: Response) => {
-  if (req.params.id.length !== 24) {
-    return sendResponse({
-      res,
-      code: 404,
-      success: false,
-      message: 'Client Not Found.',
-      data: {}
-    });
-  }
-
-  const client = await Client.findById(req.params.id);
-
-  if (
-    client === null ||
-    client.hide ||
-    client.seller.toString() !== req.body.user._id.toString()
-  ) {
-    return sendResponse({
-      res,
-      code: 404,
-      success: false,
-      message: 'Client Not Found.',
-      data: {}
-    });
-  }
-
-  client.hide = true;
-  try {
-    const updateClient = await client.save();
-    return sendResponse({
-      res,
-      code: 200,
-      success: true,
-      message: 'Updated Client.',
-      data: { updateClient }
-    });
-  } catch (error) {
-    return sendError({ res, err: error });
-  }
-};
-
-export { newClient, getClients, getClient, updateClient, deleteClient };
+export { newClient, getClients, getClient, updateClient };
