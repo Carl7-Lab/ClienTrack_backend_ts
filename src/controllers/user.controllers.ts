@@ -4,7 +4,7 @@ import User from '../models/User';
 import generateId from '../helpers/generateId';
 import generateJWT from '../helpers/generateJWT';
 import { sendError, sendResponse } from '../helpers/responseHelper';
-import { emailForgetPassword, emailRegister } from '@helpers/email';
+import { emailForgetPassword, emailRegister } from '../helpers/email';
 
 const register = async (req: Request, res: Response) => {
   const { email } = req.body;

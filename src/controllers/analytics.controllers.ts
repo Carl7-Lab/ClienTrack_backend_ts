@@ -2,16 +2,16 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request, type Response } from 'express';
 import { sendResponse } from '../helpers/responseHelper';
-import Purchase from '@models/Purchase';
-import Payment from '@models/Payment';
+import Purchase from '../models/Purchase';
+import Payment from '../models/Payment';
 import {
   // getDebtors,
   processTransactionDetails
-} from '@helpers/clientDetails';
-import { convertToUTC } from '@helpers/convertoToUTC';
-import Client from '@models/Client';
+} from '../helpers/clientDetails';
+import { convertToUTC } from '../helpers/convertoToUTC';
+import Client from '../models/Client';
 import { type Types } from 'mongoose';
-import RowKardex from '@models/RowKardex';
+import RowKardex from '../models/RowKardex';
 
 const getReport = async (req: Request, res: Response) => {
   const { startDate, endDate } = req.query;

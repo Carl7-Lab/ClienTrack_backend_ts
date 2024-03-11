@@ -2,7 +2,7 @@
 import { type Request, type Response } from 'express';
 import Client from '../models/Client';
 import { sendError, sendResponse } from '../helpers/responseHelper';
-import RowKardex from '@models/RowKardex';
+import RowKardex from '../models/RowKardex';
 
 const getClients = async (req: Request, res: Response) => {
   const { page = 1, limit = 10, search } = req.query;

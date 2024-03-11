@@ -6,7 +6,7 @@ import {
   getPayments,
   newPayment
 } from '../controllers/payment.controllers';
-import checkAuth from '@middleware/checkAuth';
+import checkAuth from '../middleware/checkAuth';
 
 const router: Router = express.Router();
 

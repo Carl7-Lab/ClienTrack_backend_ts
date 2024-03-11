@@ -4,8 +4,8 @@ import { sendError, sendResponse } from '../helpers/responseHelper';
 import Payment from '../models/Payment';
 import Client from '../models/Client';
 import { Types } from 'mongoose';
-import { convertToUTC } from '@helpers/convertoToUTC';
-import RowKardex from '@models/RowKardex';
+import { convertToUTC } from '../helpers/convertoToUTC';
+import RowKardex from '../models/RowKardex';
 
 const getPayments = async (req: Request, res: Response) => {
   const { page = 1, limit = 10, client, startDate, endDate } = req.query;

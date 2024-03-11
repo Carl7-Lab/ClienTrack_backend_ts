@@ -5,8 +5,8 @@ import {
   getClientKardex,
   getDebtorsReports,
   getReport
-} from '@controllers/analytics.controllers';
-import checkAuth from '@middleware/checkAuth';
+} from '../controllers/analytics.controllers';
+import checkAuth from '../middleware/checkAuth';
 
 const router: Router = express.Router();
 

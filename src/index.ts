@@ -6,7 +6,7 @@ import userRoutes from './routes/user.routes';
 import clientRoutes from './routes/client.routes';
 import purchaseRoutes from './routes/purchase.routes';
 import paymentRoutes from './routes/payment.routes';
-import analyticsRoutes from '@routes/analytics.routes';
+import analyticsRoutes from './routes/analytics.routes';
 
 const app = express();
 app.use(express.json());

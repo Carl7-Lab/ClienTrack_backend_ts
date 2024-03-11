@@ -5,8 +5,8 @@ import {
   getClients,
   getClient,
   updateClient
-} from '@controllers/client.controllers';
-import checkAuth from '@middleware/checkAuth';
+} from '../controllers/client.controllers';
+import checkAuth from '../middleware/checkAuth';
 
 const router: Router = express.Router();
 

@@ -2,10 +2,10 @@
 import { type Request, type Response } from 'express';
 import { sendError, sendResponse } from '../helpers/responseHelper';
 import Purchase from '../models/Purchase';
-import Client from '@models/Client';
+import Client from '../models/Client';
 import { Types } from 'mongoose';
-import { convertToUTC } from '@helpers/convertoToUTC';
-import RowKardex from '@models/RowKardex';
+import { convertToUTC } from '../helpers/convertoToUTC';
+import RowKardex from '../models/RowKardex';
 
 const getPurchases = async (req: Request, res: Response) => {
   const { page = 1, limit = 10, client, startDate, endDate } = req.query;
