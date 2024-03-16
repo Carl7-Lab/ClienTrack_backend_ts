@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-// import cors, { type CorsOptions } from 'cors';
+import cors, { type CorsOptions } from 'cors';
 import conectarDB from './config/db';
 import userRoutes from './routes/user.routes';
 import clientRoutes from './routes/client.routes';
@@ -29,25 +29,25 @@ conectarDB()
 //   whiteList.push(frontendUrl);
 // }
 
-// const whiteList: string[] = [process.env.FRONTEND_URL].filter(
-//   Boolean
-// ) as string[];
+const whiteList: string[] = [process.env.FRONTEND_URL].filter(
+  Boolean
+) as string[];
 
-// const corsOptions: CorsOptions = {
-//   origin: function (origin, callback) {
-//     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-argument
-//     if (whiteList.includes(origin ?? '')) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Error de Cors'));
-//     }
-//   }
-// };
+const corsOptions: CorsOptions = {
+  origin: function (origin, callback) {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-argument
+    if (whiteList.includes(origin ?? '')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Error de Cors'));
+    }
+  }
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Routing
-app.use('/', (req, res) => res.send('hello world'));
+// app.use('/', (req, res) => res.send('hello world'));
 app.use('/api/users', userRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/purchases', purchaseRoutes);
