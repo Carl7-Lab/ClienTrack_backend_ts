@@ -89,7 +89,7 @@ const getDebtorsReports = async (req: Request, res: Response) => {
       const lastRowKardex = await RowKardex.findOne({
         client: client._id
       })
-        .select('balance date type typeModel description -_id')
+        .select('balance debit credit date type typeModel description -_id')
         .populate({ path: 'type', select: 'date value items note typePay' })
         .sort({ createdAt: -1 });
 
