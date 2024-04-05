@@ -126,7 +126,7 @@ const getReport = async (req: Request, res: Response) => {
       res,
       code: 404,
       success: false,
-      message: 'Monthly Report Not Found.',
+      message: 'Monthly Report  Not Found.',
       data: {}
     });
   }
