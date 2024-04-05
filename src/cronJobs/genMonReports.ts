@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { processTransactionDetails } from 'src/helpers/clientDetails';
-import { convertToUTC } from 'src/helpers/convertoToUTC';
-import getMonthName from 'src/helpers/getMonthName';
-import Payment from 'src/models/Payment';
-import Purchase from 'src/models/Purchase';
-import Report from 'src/models/Report';
-import User from 'src/models/User';
+import { processTransactionDetails } from '../helpers/clientDetails';
+import { convertToUTC } from '../helpers/convertoToUTC';
+import getMonthName from '../helpers/getMonthName';
+import Payment from '../models/Payment';
+import Purchase from '../models/Purchase';
+import Report from '../models/Report';
+import User from '../models/User';
 
 export const generateMonthReport = async () => {
   //   console.log('haciendo los reportes de cada usuario ...!!!');

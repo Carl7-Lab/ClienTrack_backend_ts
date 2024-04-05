@@ -9,7 +9,7 @@ import { convertToUTC } from '../helpers/convertoToUTC';
 import Client from '../models/Client';
 import { type Types } from 'mongoose';
 import RowKardex from '../models/RowKardex';
-import Report from 'src/models/Report';
+import Report from '../models/Report';
 
 const doReportByDate = async (req: Request, res: Response) => {
   const { startDate, endDate } = req.query;
