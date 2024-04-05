@@ -99,9 +99,21 @@ export const processTransactions = (transactions: any[]) => {
     }
   });
 
+  const sortedClients = Object.values(transactionsWithClientDetails).sort(
+    (a, b) => {
+      // Ordenar por apellido
+      const comparisonLastName = a.lastName.localeCompare(b.lastName);
+      if (comparisonLastName !== 0) {
+        return comparisonLastName;
+      }
+      // Si los apellidos son iguales, ordenar por nombre
+      return a.name.localeCompare(b.name);
+    }
+  );
+
   return {
     value: totalAmount,
-    clientsDetails: Object.values(transactionsWithClientDetails)
+    clientsDetails: sortedClients
   };
 };
 

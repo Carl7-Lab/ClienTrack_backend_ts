@@ -42,7 +42,7 @@ const getClients = async (req: Request, res: Response) => {
     .select('-createdAt -updatedAt -__v -hide')
     .limit(limit as number)
     .skip(((page as number) - 1) * (limit as number))
-    .sort({ createdAt: -1 });
+    .sort({ lastName: 1, name: 1, alias: 1 });
 
   if (clients.length === 0) {
     return sendResponse({

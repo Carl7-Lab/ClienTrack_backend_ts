@@ -7,6 +7,8 @@ import clientRoutes from './routes/client.routes';
 import purchaseRoutes from './routes/purchase.routes';
 import paymentRoutes from './routes/payment.routes';
 import analyticsRoutes from './routes/analytics.routes';
+import cron from 'node-cron';
+import { generateMonthReport } from './cronJobs/genMonReports';
 
 const app = express();
 app.use(express.json());
@@ -20,14 +22,6 @@ conectarDB()
   .catch((error) => {
     console.error(`Error connecting to the database: ${error.message}.`);
   });
-
-// const whiteList: string[] = [];
-
-// const frontendUrl = process.env.FRONTEND_URL;
-
-// if (frontendUrl != null) {
-//   whiteList.push(frontendUrl);
-// }
 
 const whiteList: string[] = [process.env.FRONTEND_URL].filter(
   Boolean
@@ -47,7 +41,6 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 
 // Routing
-// app.use('/', (req, res) => res.send('hello world'));
 app.use('/api/users', userRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/purchases', purchaseRoutes);
@@ -57,4 +50,10 @@ app.use('/api/analytics', analyticsRoutes);
 const PORT = process.env.PORT ?? 4000;
 app.listen(PORT, () => {
   console.log(`Sever running on the port ${PORT}`);
+});
+
+cron.schedule('42 12 3 * *', () => {
+  generateMonthReport().catch((error) => {
+    console.error('Error en el reporte:', error);
+  });
 });
