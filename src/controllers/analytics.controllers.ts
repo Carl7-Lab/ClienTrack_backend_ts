@@ -292,7 +292,8 @@ const getClientKardex = async (req: Request, res: Response) => {
   const query: {
     seller: { $in: string[] };
     client: Types.ObjectId;
-    createdAt?: { $gte?: Date; $lt?: Date };
+    // createdAt?: { $gte?: Date; $lt?: Date };
+    date?: { $gte?: Date; $lt?: Date };
   } = {
     seller: { $in: req.body.user },
     client: client._id
@@ -302,7 +303,11 @@ const getClientKardex = async (req: Request, res: Response) => {
     const startOfDay = new Date(startDate as string);
     const endOfDay = new Date(endDate as string);
 
-    query.createdAt = {
+    // query.createdAt = {
+    //   $gte: convertToUTC(startOfDay),
+    //   $lt: convertToUTC(endOfDay, true)
+    // };
+    query.date = {
       $gte: convertToUTC(startOfDay),
       $lt: convertToUTC(endOfDay, true)
     };
