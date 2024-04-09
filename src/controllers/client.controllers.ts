@@ -117,12 +117,12 @@ const getClient = async (req: Request, res: Response) => {
   }
 
   const firstRowKardex = await RowKardex.findOne({ client: client._id })
-    .select('createdAt -_id')
-    .sort({ createdAt: 1 });
+    .select('date -_id')
+    .sort({ date: 1 });
 
   const today = new Date();
   const firstMoveDate =
-    firstRowKardex?.createdAt ?? new Date(today.getFullYear(), 0, 1);
+    firstRowKardex?.date ?? new Date(today.getFullYear(), 0, 1);
 
   return sendResponse({
     res,
